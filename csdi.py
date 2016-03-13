@@ -67,6 +67,10 @@ def main():
     cf = ConfigParser.ConfigParser()
     cf.read("config.ini")
 
+    '''
+    _user表示用户发送邮箱
+    _to表示接收邮件到邮箱,推荐QQ邮箱,因为微信上也有提示
+    '''
     _user = cf.get("mail","user")
     _password = cf.get("mail","password")
     _to = cf.get("mail","to")
