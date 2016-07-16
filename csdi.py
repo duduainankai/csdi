@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
-# nohup python -u csdi.py > csdi.out &
+
+
+# nohup python -u csdi.py > csdi.out & ssh远程连接云主机运行的命令,保证会话结束后程序依旧运行
 
 import requests
 from bs4 import BeautifulSoup
@@ -10,6 +12,8 @@ from email.header import Header
 import ConfigParser
 import re
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 __author__ = "lizheming"
 
@@ -32,8 +36,11 @@ def send(text,count,_user,_password,_to):
     msg["To"] = _to
 
     s = smtplib.SMTP(smtp, timeout=30)
-    s.login(_user, _password)
-    s.sendmail(_user, _to, msg.as_string())
+    try:
+        s.login(_user, _password)
+        #s.sendmail(_user, _to, msg.as_string())
+    except Exception,e:
+        print e
     s.close()
 
 
@@ -66,7 +73,6 @@ def fetch(count):
 def main():
     cf = ConfigParser.ConfigParser()
     cf.read("config.ini")
-
     '''
     _user表示用户发送邮箱
     _to表示接收邮件到邮箱,推荐QQ邮箱,因为微信上也有提示
